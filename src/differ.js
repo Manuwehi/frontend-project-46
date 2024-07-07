@@ -9,6 +9,9 @@ const diff = (firstObj, secObj) => {
     if (!Object.hasOwn(secObj, key)) {
       return { key, type: 'deleted', value: firstObj[key] };
     }
+    if (_.isObject(firstObj[key]) && _.isObject(secObj[key])) {
+      return { key, type: 'nested', children: diff(firstObj[key], secObj[key]) };
+    }
     if (firstObj[key] === secObj[key]) {
       return { key, type: 'unchanged', value: firstObj[key] };
     }

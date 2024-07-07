@@ -2,7 +2,7 @@ import { cwd } from 'node:process';
 import { resolve, extname } from 'node:path';
 import { readFile, parser } from './src/parsers.js';
 import diff from './src/differ.js';
-import formatter from './src/style.js';
+import formatter from './src/stylish.js';
 
 export const normalizeFilepath = (filepath) => resolve(cwd(), filepath);
 export const getFileExtension = (filepath) => extname(filepath).slice(1);
