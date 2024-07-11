@@ -1,4 +1,4 @@
-import { gendiff } from '../src/index.js';
+import gendiff from '../src/index.js';
 
 test('yml', () => {
   expect(gendiff('./__fixtures__/file3.yaml', './__fixtures__/file4.yaml', 'stylish')).toStrictEqual(`{
