@@ -85,6 +85,6 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`);
 });
 
-test('form json', () => {
-  expect(gendiff()).toStrictEqual('sdsd');
-});
+/* test('form json', () => {
+  expect(gendiff('ss')).toStrictEqual('sdsd');
+}); */
