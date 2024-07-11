@@ -1,90 +1,17 @@
-import gendiff from '../src/index.js';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+import gendiff from '../index.js';
 
-test('yml', () => {
-  expect(gendiff('./__fixtures__/file3.yaml', './__fixtures__/file4.yaml', 'stylish')).toStrictEqual(`{
-    common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: {
-            key5: value5
-        }
-        setting6: {
-            doge: {
-              - wow: 
-              + wow: so much
-            }
-            key: value
-          + ops: vops
-        }
-    }
-}`);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+
+test.each(['json', 'yaml', 'yml'])('test', (ext) => {
+  expect(gendiff(getFixturePath(`file1.${ext}`), getFixturePath(`file2.${ext}`))).toStrictEqual(readFile('expectedStylish.txt'));
+  expect(gendiff(getFixturePath(`file1.${ext}`), getFixturePath(`file2.${ext}`), 'stylish')).toStrictEqual(readFile('expectedStylish.txt'));
+  expect(gendiff(getFixturePath(`file1.${ext}`), getFixturePath(`file2.${ext}`), 'plain')).toStrictEqual(readFile('expectedPlain.txt'));
+  expect(gendiff(getFixturePath(`file1.${ext}`), getFixturePath(`file2.${ext}`), 'json')).toStrictEqual(readFile('expectedJson.txt'));
 });
-
-test('json', () => {
-  expect(gendiff('./__fixtures__/file1.json', './__fixtures__/file2.json')).toStrictEqual(`{
-    common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: {
-            key5: value5
-        }
-        setting6: {
-            doge: {
-              - wow: 
-              + wow: so much
-            }
-            key: value
-          + ops: vops
-        }
-    }
-    group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: {
-            key: value
-        }
-      + nest: str
-    }
-  - group2: {
-        abc: 12345
-        deep: {
-            id: 45
-        }
-    }
-  + group3: {
-        deep: {
-            id: {
-                number: 45
-            }
-        }
-        fee: 100500
-    }
-}`);
-});
-
-test('plain', () => {
-  expect(gendiff('./__fixtures__/file1.json', './__fixtures__/file2.json', 'plain')).toStrictEqual(`Property 'common.follow' was added with value: false
-Property 'common.setting2' was removed
-Property 'common.setting3' was updated. From true to null
-Property 'common.setting4' was added with value: 'blah blah'
-Property 'common.setting5' was added with value: [complex value]
-Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
-Property 'common.setting6.ops' was added with value: 'vops'
-Property 'group1.baz' was updated. From 'bas' to 'bars'
-Property 'group1.nest' was updated. From [complex value] to 'str'
-Property 'group2' was removed
-Property 'group3' was added with value: [complex value]`);
-});
-
-/* test('form json', () => {
-  expect(gendiff('ss')).toStrictEqual('sdsd');
-}); */
