@@ -1,13 +1,13 @@
 import { cwd } from 'node:process';
 import { resolve, extname } from 'node:path';
-import { readFile, parser } from './src/parsers.js';
-import diff from './src/differ.js';
-import formatter from './src/formatters/index.js';
+import { readFile, parser } from './parsers.js';
+import diff from './differ.js';
+import formatter from './formatters/index.js';
 
-export const normalizeFilepath = (filepath) => resolve(cwd(), filepath);
-export const getFileExtension = (filepath) => extname(filepath).slice(1);
+const normalizeFilepath = (filepath) => resolve(cwd(), filepath);
+const getFileExtension = (filepath) => extname(filepath).slice(1);
 
-export const gendiff = (filepath1, filepath2, neededForm = 'stylish') => {
+const gendiff = (filepath1, filepath2, neededForm = 'stylish') => {
   const normalizedFilepath1 = normalizeFilepath(filepath1);
   const normalizedFilepath2 = normalizeFilepath(filepath2);
 
@@ -23,3 +23,5 @@ export const gendiff = (filepath1, filepath2, neededForm = 'stylish') => {
 
   return formatter(difference, neededForm);
 };
+
+export default gendiff;

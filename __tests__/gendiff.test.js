@@ -1,4 +1,4 @@
-import { gendiff } from '../index.js';
+import { gendiff } from '../src/index.js';
 
 test('yml', () => {
   expect(gendiff('./__fixtures__/file3.yaml', './__fixtures__/file4.yaml', 'stylish')).toStrictEqual(`{
@@ -83,4 +83,8 @@ Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`);
+});
+
+test('form json', () => {
+  expect(gendiff()).toStrictEqual('sdsd');
 });
