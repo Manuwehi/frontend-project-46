@@ -6,3 +6,6 @@ lint:
 	npx eslint .
 publish:
 	npm publish
+test-coverage:
+	npm test -- --coverage --coverageProvider=v8
+
