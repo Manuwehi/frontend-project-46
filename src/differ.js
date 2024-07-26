@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const diff = (firstObj, secObj) => {
+const getDiff = (firstObj, secObj) => {
   const keys = _.sortBy(_.union(Object.keys(firstObj), Object.keys(secObj)));
   const result = keys.map((key) => {
     if (!Object.hasOwn(firstObj, key)) {
@@ -10,7 +10,7 @@ const diff = (firstObj, secObj) => {
       return { key, type: 'deleted', value: firstObj[key] };
     }
     if (_.isObject(firstObj[key]) && _.isObject(secObj[key])) {
-      return { key, type: 'nested', children: diff(firstObj[key], secObj[key]) };
+      return { key, type: 'nested', children: getDiff(firstObj[key], secObj[key]) };
     }
     if (firstObj[key] === secObj[key]) {
       return { key, type: 'unchanged', value: firstObj[key] };
@@ -22,4 +22,4 @@ const diff = (firstObj, secObj) => {
   return result;
 };
 
-export default diff;
+export default getDiff;
