@@ -10,20 +10,20 @@ const getPreparedValue = (value) => {
   return `${value}`;
 };
 
-const getFinalPath = (path, target) => (path ? `${path}.${target}` : target);
+const getFinalNode = (path, target) => (path ? `${path}.${target}` : target);
 
-const plainFormatter = (diff, path = '') => {
+const getPlainFormat = (diff, path = '') => {
   const result = diff.map((node) => {
-    const finalPath = getFinalPath(path, node.key);
+    const finalNode = getFinalNode(path, node.key);
     switch (node.type) {
       case 'added':
-        return `Property '${finalPath}' was added with value: ${getPreparedValue(node.value)}`;
+        return `Property '${finalNode}' was added with value: ${getPreparedValue(node.value)}`;
       case 'deleted':
-        return `Property '${finalPath}' was removed`;
+        return `Property '${finalNode}' was removed`;
       case 'changed':
-        return `Property '${finalPath}' was updated. From ${getPreparedValue(node.oldValue)} to ${getPreparedValue(node.newValue)}`;
+        return `Property '${finalNode}' was updated. From ${getPreparedValue(node.oldValue)} to ${getPreparedValue(node.newValue)}`;
       case 'nested':
-        return plainFormatter(node.children, finalPath);
+        return getPlainFormat(node.children, finalNode);
       case 'unchanged':
         return null;
       default:
@@ -34,4 +34,4 @@ const plainFormatter = (diff, path = '') => {
   return clearedResult;
 };
 
-export default plainFormatter;
+export default getPlainFormat;
