@@ -10,9 +10,15 @@ const getPreparedValue = (value) => {
   return `${value}`;
 };
 
-const getFinalNode = (path, target) => (path ? `${path}.${target}` : target);
+const getFinalNode = (path, target) => {//////// ne ponyatno
+  const newPath = [path];
+  newPath.push(target);
+  const joinedPath = newPath.join('.');
+  return joinedPath;
+// return joinedPath;
+} //(path ? path  : target);
 
-const getPlainFormat = (diff, path = '') => {
+const getPlainFormat = (diff, path) => {
   const result = diff.map((node) => {
     const finalNode = getFinalNode(path, node.key);
     switch (node.type) {
