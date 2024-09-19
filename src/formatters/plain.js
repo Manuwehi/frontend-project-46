@@ -10,24 +10,18 @@ const getPreparedValue = (value) => {
   return `${value}`;
 };
 
-const getFinalNode = (path, target) => {//////// ne ponyatno
-  const newPath = [path];
-  newPath.push(target);
-  const joinedPath = newPath.join('.');
-  return joinedPath;
-// return joinedPath;
-} //(path ? path  : target);
+const getFinalNode = (path, target) => (path ? path.concat(target) : target);
 
-const getPlainFormat = (diff, path) => {
+const getPlainFormat = (diff, path = []) => {
   const result = diff.map((node) => {
     const finalNode = getFinalNode(path, node.key);
     switch (node.type) {
       case 'added':
-        return `Property '${finalNode}' was added with value: ${getPreparedValue(node.value)}`;
+        return `Property '${finalNode.join('.')}' was added with value: ${getPreparedValue(node.value)}`;
       case 'deleted':
-        return `Property '${finalNode}' was removed`;
+        return `Property '${finalNode.join('.')}' was removed`;
       case 'changed':
-        return `Property '${finalNode}' was updated. From ${getPreparedValue(node.oldValue)} to ${getPreparedValue(node.newValue)}`;
+        return `Property '${finalNode.join('.')}' was updated. From ${getPreparedValue(node.oldValue)} to ${getPreparedValue(node.newValue)}`;
       case 'nested':
         return getPlainFormat(node.children, finalNode);
       case 'unchanged':
