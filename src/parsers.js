@@ -15,13 +15,18 @@ const parser = (data, format) => {
   }
 };
 
-const getObj = (fullFilepath) => {
+const preparedFile = (fullFilepath) => {
   const getFileExtension = (filepath) => extname(filepath).slice(1);
   const readFile = (filepath) => fs.readFileSync(filepath, 'utf-8');
   const firstContent = readFile(fullFilepath);
   const firstExtension = getFileExtension(fullFilepath);
-  const obj = parser(firstContent, firstExtension);
+  const arrOpt = [firstContent, firstExtension];
+  return arrOpt;
+};
 
+const getObj = (fullFilepath) => {
+  const arrOpt = preparedFile(fullFilepath);
+  const obj = parser(arrOpt[0], arrOpt[1]);
   return obj;
 };
 
